@@ -4,6 +4,7 @@ import './menu-item.styles.scss';
 
 const MenuItem = ({title, imageUrl, size}) => (
   <div className={`${size} menu-item`}>
+    {/*We use this as background image of content so when we hover the image does not expand beyond content are */}
     <div
       className="background-image"
       style={{
