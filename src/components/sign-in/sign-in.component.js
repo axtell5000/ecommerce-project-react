@@ -2,6 +2,8 @@ import React from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+import { signInWithGoogle } from '../../firebase/firebase.utils';
+
 import './sign-in.styles.scss';
 
 class SignIn extends React.Component {
@@ -14,16 +16,18 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.setState({ email: '', password: ''});
-  }
+  handleSubmit = event => {
+    event.preventDefault();
 
-  handleChange = e => {
-    const { value, name } = e.target;
+    this.setState({ email: '', password: '' });
+  };
 
-    this.setState( {[name] : value})
-  }
+  handleChange = event => {
+    const { value, name } = event.target;
+
+    this.setState({ [name]: value });
+    console.log('Whats cracking')
+  };
 
   render() {
     return (
@@ -48,6 +52,7 @@ class SignIn extends React.Component {
             required/>
           
           <CustomButton type="submit">Sign In</CustomButton>
+          <CustomButton onClick={signInWithGoogle}>Sign in with Google</CustomButton>
         </form>
       </div>
     )
