@@ -29,6 +29,7 @@ class SignUp extends React.Component {
     }
 
     try {
+      // createUserWithEmailAndPassword - from firebase
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
