@@ -12,8 +12,8 @@ const Header = ({ currentUser }) => (
       <Logo className="logo"></Logo>
     </Link>
     <div className="options">
-      <Link className="option" to="/shop">SHOP</Link>
-      <Link className="option" to="/contact">contact</Link>
+      <Link className="option" to="/">home</Link>
+      <Link className="option" to="/shop">shop</Link>
       {
         currentUser ?
         <div className="option" onClick={(() => auth.signOut())}>sign out</div>
@@ -24,7 +24,7 @@ const Header = ({ currentUser }) => (
   </div>
 );
 
-// statge - rootReducer
+// connecting to the state. this instance state - rootReducer
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser
 })
