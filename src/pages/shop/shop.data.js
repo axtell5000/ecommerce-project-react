@@ -1,5 +1,5 @@
 const SHOP_DATA = [
-  // some dummy data
+  // New dummy data
   {
     id: 1,
     title: 'Hats',
