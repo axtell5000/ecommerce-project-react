@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import CardDropdown from '../cart-dropdown/cart-dopdown.component';
 import CartIcon from '../cart-icon/cart-icon.component';
 import { auth } from '../../firebase/firebase.utils';
 import { ReactComponent as Logo} from '../../assets/crown.svg';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+
 import './header.styles.scss';
 
 const Header = ({ currentUser, hidden }) => (
@@ -34,9 +38,9 @@ const Header = ({ currentUser, hidden }) => (
 
 // connecting to the state. this instance state - rootReducer
 // Here we are using the currentUser piece of data
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser,
-  hidden: state.cart.hidden
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden
 })
 
 // connect is a higher order function
