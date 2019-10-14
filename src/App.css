@@ -3,6 +3,10 @@ body {
   padding: 20px 60px;
 }
 
+html {
+  overflow: scroll;
+}
+
 a {
   color: black;
   text-decoration: none;
