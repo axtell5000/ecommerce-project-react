@@ -14,6 +14,11 @@
   width: 240px;
   z-index: 5;
 
+  .empty-message {
+    font-size: 18px;
+    margin: 50px auto;
+  }
+
   & ::-webkit-scrollbar { width: 0 !important }
 
   .cart-items {
