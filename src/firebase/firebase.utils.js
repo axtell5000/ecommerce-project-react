@@ -19,6 +19,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   // two types of Objects we get back from firebase, 
   const userRef = firestore.doc(`users/${userAuth.uid}`);// 1) Query reference - where something is in database
+  const collectionRef = firestore.collection('users');
   const snapshot = await userRef.get(); // 2) snapshot object, get data from the location we got in userRef
 
   // here if user doesnt exit we are creating one, firstly taking our google credetials and adding it as a user
@@ -41,6 +42,39 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   return userRef;
   
+};
+
+// Function to add data to database
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  // creating the batch first
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+    console.log(newDocRef);
+  });
+  console.log(objectsToAdd, 'test');
+  return await batch.commit();
+}
+
+// converting the arrays to objects, works out that each category is the key which as objects for each item
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    }
+  });
+  return transformCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {})
 }
 
 firebase.initializeApp(config);

@@ -6,6 +6,7 @@ import rootReducer from './root-reducer';
 
 const middlewares = [];
 
+// Only use logger in development
 if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger)
 }

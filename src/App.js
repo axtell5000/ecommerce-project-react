@@ -8,9 +8,10 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import {auth, createUserProfileDocument, addCollectionAndDocuments} from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 import './App.css';
 
@@ -22,7 +23,7 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    const { setCurrentUser } = this.props; // destructuring off props, the dispatch to be used here
+    const { setCurrentUser, collectionsArray } = this.props; // destructuring off props, the dispatch to be used here
     // unsubscribeFromAuth - is an Observer "listening" to firebase. The whole thing is subscribing to firebase, so everytime
     // there is a change in auth the code will run and changing our local state
     // userAuth is the user state of the auth in firebase project
@@ -43,6 +44,7 @@ class App extends React.Component {
       }
       // here if no user we are seeting the currentUser to null as it was right at the beginning
       setCurrentUser(userAuth);
+      addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items}))); // put here do run only once
     });
   }
 
@@ -68,7 +70,8 @@ class App extends React.Component {
 
 }
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionsForPreview
 });
 
 // seeting up our dispatch to be used when we want to change state
