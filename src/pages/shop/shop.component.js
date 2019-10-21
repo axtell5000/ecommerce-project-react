@@ -21,23 +21,16 @@ class Shop extends React.Component {
     loading: true
   };
 
-  unsubscribeFromSnapshot = null;
-
   componentDidMount() {
     const { updateCollections } = this.props;
     const collectionRef = firestore.collection('collections');
 
-    this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+    // Using a Promise hear instead of an Observable
+    collectionRef.get().then(snapshot => {
       const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
       updateCollections(collectionsMap);
       this.setState({loading: false});      
     })
-  }
-
-  // need to do this to prevent memory leaks
-  componentWillUnmount() {
-    // Built into function so that when we call it , it closes the subscription
-    this.unsubscribeFromSnapshot();
   }
 
   render(){
