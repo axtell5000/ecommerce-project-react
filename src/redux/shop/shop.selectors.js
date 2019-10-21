@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 
 const selectShop = state => state.shop;
 
+// BIG NOTE - There will be times when data is not ready when you need it - ie fetching from database. Be on the lookout
+// and seek solutions
+
 export const selectCollections = createSelector(
   [selectShop],
   shop => shop.collections
@@ -10,12 +13,12 @@ export const selectCollections = createSelector(
 export const selectCollection = collectionUrlParam =>
   createSelector(
     [selectCollections],
-    collections => collections[collectionUrlParam]
+    collections => (collections ? collections[collectionUrlParam] : null)
   );
 
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
-  collections => Object.keys(collections).map(key => collections[key]) // way to convert Object to an array
+  collections => collections ? Object.keys(collections).map(key => collections[key]) : [] // way to convert Object to an array
 );
 
 // export const selectCollections = collectionUrlParam =>

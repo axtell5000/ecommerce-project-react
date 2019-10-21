@@ -7,10 +7,19 @@ import CollectionPage from '../collection/collection.component';
 
 import { firestore, convertCollectionsSnapshotToMap } from '../../firebase/firebase.utils';
 
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
+
 import { updateCollections } from '../../redux/shop/shop.actions';
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 // we changed to class because we are going to be using some hooks
 class Shop extends React.Component {
+
+  state = {
+    loading: true
+  };
 
   unsubscribeFromSnapshot = null;
 
@@ -20,17 +29,35 @@ class Shop extends React.Component {
 
     this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
       const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-      updateCollections(collectionsMap);      
+      updateCollections(collectionsMap);
+      this.setState({loading: false});      
     })
   }
 
-  render(){
+  // need to do this to prevent memory leaks
+  componentWillUnmount() {
+    // Built into function so that when we call it , it closes the subscription
+    this.unsubscribeFromSnapshot();
+  }
 
+  render(){
+    const { loading } = this.state;
     const { match } = this.props;
     return  (
       <div className="shop-page">
-        <Route exact path={`${match.path}`} component={CollectionsOverview} />
-        <Route path={`${match.path}/:collectionId`} component={CollectionPage} />
+        <Route 
+          exact 
+          path={`${match.path}`} 
+          render={props => (
+            <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+          )}
+        />
+        <Route 
+          path={`${match.path}/:collectionId`} 
+          render={props => (
+            <CollectionPageWithSpinner isLoading={loading} {...props} />
+          )}
+        />
       </div>
     )
   }
