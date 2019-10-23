@@ -1,5 +1,4 @@
 import ShopActionTypes from './shop.types';
-import undefined from 'firebase/empty-import';
 
 const INITIAL_STATE = {
   collections: null,
