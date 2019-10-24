@@ -26,6 +26,7 @@ class App extends React.Component {
     const { setCurrentUser, collectionsArray } = this.props; // destructuring off props, the dispatch to be used here
     // unsubscribeFromAuth - is an Observer "listening" to firebase. The whole thing is subscribing to firebase, so everytime
     // there is a change in auth the code will run and changing our local state
+    // The advantage here its always listening, we could have just used a normal Promise, but will only happen once is this scenario
     // userAuth is the user state of the auth in firebase project
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       
