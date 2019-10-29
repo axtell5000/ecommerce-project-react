@@ -3,8 +3,8 @@ import { persistStore } from 'redux-persist'; // package allows to persist site 
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
-import { fetchCollectionsStart } from './shop/shop.sagas'
 import rootReducer from './root-reducer';
+import rootSaga from './root-saga';
 
 // At this point we are replacing thunk with Sagas
 /* redux-saga is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure 
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
-sagaMiddleware.run(fetchCollectionsStart);
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
 
