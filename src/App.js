@@ -9,11 +9,17 @@ import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { checkUserSession } from './redux/user/user.actions';
 
 import './App.css';
 
 // We are converting this to a class based component because we are using state based on user logged in
 class App extends React.Component {
+
+  componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
+  }
 
   render() {
     return (
@@ -30,9 +36,13 @@ class App extends React.Component {
   }
 
 }
+
+const mapDispatchToProps = dispatch =>({
+  checkUserSession: () => dispatch(checkUserSession())
+});
+
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
 
-
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
