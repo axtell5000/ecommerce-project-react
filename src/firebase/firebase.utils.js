@@ -19,7 +19,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   // two types of Objects we get back from firebase, 
   const userRef = firestore.doc(`users/${userAuth.uid}`);// 1) Query reference - where something is in database
-  const collectionRef = firestore.collection('users');
+  
   const snapshot = await userRef.get(); // 2) snapshot object, get data from the location we got in userRef
 
   // here if user doesnt exit we are creating one, firstly taking our google credetials and adding it as a user
@@ -82,11 +82,11 @@ firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // to use the google prompt to select google account when signing in with Google
-provider.setCustomParameters({ prompt: 'select_account'});
+googleProvider.setCustomParameters({ prompt: 'select_account'});
 // here create a google popup. It is google because we had set up Google authentication, in firebase console under Authentication 
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;
