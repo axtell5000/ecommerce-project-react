@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import  { connect } from 'react-redux';
 
@@ -8,31 +8,27 @@ import CollectionPageContainer from '../collection/collection.container';
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 
 // we changed to class because we are going to be using some hooks
-class Shop extends React.Component {
-
-  componentDidMount() {    
-    const { fetchCollectionsStart } = this.props;
+const Shop = ({fetchCollectionsStart, match}) => {
+  
+  useEffect(() => {
     fetchCollectionsStart();
-  }
+  }, [fetchCollectionsStart]); /* This is a trick to get useEffect to work correctly, when we want something not to re-render
+  
+  we need [], but sometimes this gives errors, to fix it we can cheat by using something that wont cause unnecessarry re-renders*/
 
-  // render() runs before componentDidMount()
-  render(){    
-    const { match } = this.props;
-    return  (
-      <div className="shop-page">
-        <Route 
-          exact 
-          path={`${match.path}`} 
-          component={CollectionsOverviewContainer}
-        />
-        <Route 
-          path={`${match.path}/:collectionId`} 
-          component={CollectionPageContainer}
-        />
-      </div>
-    )
-  }
-
+  return  (
+    <div className="shop-page">
+      <Route 
+        exact 
+        path={`${match.path}`} 
+        component={CollectionsOverviewContainer}
+      />
+      <Route 
+        path={`${match.path}/:collectionId`} 
+        component={CollectionPageContainer}
+      />
+    </div>
+  )
 }
 
 const mapDispatchToProps = dispatch => ({
