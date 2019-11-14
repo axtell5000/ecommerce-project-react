@@ -18,11 +18,12 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cors());
-app.use(compression());
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(compression());
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
   // targeting any location to get files, the send them
   app.get('*', function(req, res) {
